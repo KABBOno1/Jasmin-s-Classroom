@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="Jasmin's Personal Biology Classroom — Premium Biology LMS">
+  <title>Jasmin's Biology Classroom 🌸</title>
+
+  <!-- Preconnect for fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Prevent iOS tap highlight -->
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+  </style>
+</head>
+<body>
+
+<!-- ─── AMBIENT ORBS ─── -->
+<div class="orb orb-1" aria-hidden="true"></div>
+<div class="orb orb-2" aria-hidden="true"></div>
+<div class="orb orb-3" aria-hidden="true"></div>
+
+<!-- ─── NAVBAR ─── -->
+<nav id="navbar" role="navigation" aria-label="Main Navigation">
+  <div class="nav-logo" onclick="navigate('home')" role="button" aria-label="Go Home">
+    <div class="nav-logo-icon" aria-hidden="true">🌸</div>
+    <span>Jasmin's Classroom</span>
+  </div>
+  <div class="nav-actions">
+    <div class="streak-pill" title="Study Streak">🔥 <span id="streak-count">0</span></div>
+    <button class="btn-nav" onclick="navigate('dashboard')">Dashboard</button>
+    <button class="btn-icon" id="dark-btn" onclick="toggleDark()" title="Toggle Dark Mode">🌙</button>
+  </div>
+</nav>
+
+<!-- ─── APP ─── -->
+<div id="app" role="main">
+
+  <!-- ══════════════════════════ HOME PAGE ══════════════════════════ -->
+  <div id="home-page" class="page active">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-badge">✨ Personal Biology Academy</div>
+      <h1>Welcome to Jasmin's<br>Biology World 🌸</h1>
+      <p class="hero-sub">Your dedicated space to master Biology — one lecture at a time.</p>
+      <div class="flirty-tag">Study hard, impress me later 😌</div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">60</span>
+          <span class="stat-label">Lectures</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">14</span>
+          <span class="stat-label">Chapters</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">100+</span>
+          <span class="stat-label">Quiz Questions</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" id="all-pct">0%</span>
+          <span class="stat-label">Completed</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Courses -->
+    <div class="section">
+      <div class="section-head">
+        <h2>Your Courses 📚</h2>
+        <p>Every chapter you finish = one more reason I'm proud of you 💕</p>
+      </div>
+      <div class="courses-grid">
+
+        <!-- Bio 1st Paper -->
+        <div class="course-card bio1-card" onclick="navigate('course','bio1')" role="button" tabindex="0"
+             aria-label="Open Biology 1st Paper">
+          <div class="course-card-glow"></div>
+          <div class="cc-header">
+            <div class="cc-icon">🔬</div>
+            <div class="cc-title">Biology 1st Paper</div>
+            <div class="cc-tag">Plant Biology & Physiology</div>
+          </div>
+          <div class="cc-body">
+            <div class="cc-meta">
+              <div class="cc-meta-item">📹 22 lectures</div>
+              <div class="cc-meta-item">📖 6 chapters</div>
+            </div>
+            <div class="prog-label">
+              <span>Progress</span>
+              <span id="bio1-pct">0%</span>
+            </div>
+            <div class="prog-bar">
+              <div class="prog-fill" id="bio1-fill" style="width:0%"></div>
+            </div>
+            <button class="cc-btn bio1-btn">Start Learning →</button>
+          </div>
+        </div>
+
+        <!-- Bio 2nd Paper -->
+        <div class="course-card bio2-card" onclick="navigate('course','bio2')" role="button" tabindex="0"
+             aria-label="Open Biology 2nd Paper">
+          <div class="course-card-glow"></div>
+          <div class="cc-header">
+            <div class="cc-icon">🧬</div>
+            <div class="cc-title">Biology 2nd Paper</div>
+            <div class="cc-tag">Animal Biology & Zoology</div>
+          </div>
+          <div class="cc-body">
+            <div class="cc-meta">
+              <div class="cc-meta-item">📹 38 lectures</div>
+              <div class="cc-meta-item">📖 8 chapters</div>
+            </div>
+            <div class="prog-label">
+              <span>Progress</span>
+              <span id="bio2-pct">0%</span>
+            </div>
+            <div class="prog-bar">
+              <div class="prog-fill" id="bio2-fill" style="width:0%"></div>
+            </div>
+            <button class="cc-btn bio2-btn">Start Learning →</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /home-page -->
+
+  <!-- ══════════════════════════ COURSE PAGE ══════════════════════════ -->
+  <div id="course-page" class="page">
+    <div style="padding:0 24px; max-width:1100px; margin:0 auto;">
+      <div class="page-header">
+        <button class="btn-back" id="course-back-btn" aria-label="Back">←</button>
+        <div>
+          <h1 class="page-title" id="course-page-title">Course</h1>
+          <p class="page-sub" id="course-page-tag">Select a chapter to begin</p>
+        </div>
+      </div>
+      <div class="chapters-list" id="chapters-container"></div>
+    </div>
+  </div><!-- /course-page -->
+
+  <!-- ══════════════════════════ VIDEO PAGE ══════════════════════════ -->
+  <div id="video-page" class="page">
+    <div style="padding:0 24px; max-width:1200px; margin:0 auto;">
+
+      <div class="page-header">
+        <button class="btn-back" id="video-back-btn" aria-label="Back">←</button>
+        <div>
+          <h1 class="page-title" id="video-page-title">Chapter</h1>
+          <p class="page-sub">Select any lecture from the playlist</p>
+        </div>
+      </div>
+
+      <div class="video-layout">
+
+        <!-- LEFT: Player -->
+        <div>
+          <!-- Premium Player Shell -->
+          <div class="player-shell" id="player-shell" oncontextmenu="return false;">
+
+            <!-- YouTube embed iframe -->
+            <div class="player-yt-wrap">
+              <iframe
+                id="yt-frame"
+                title="Lecture Video"
+                allowfullscreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                loading="lazy"
+                src=""
+              ></iframe>
+            </div>
+
+            <!-- Custom controls bar -->
+            <div class="player-controls">
+              <div class="ctrl-top">
+                <!-- Speed selector -->
+                <label for="speed-sel" style="color:rgba(255,255,255,0.6);font-size:0.72rem;">⚡ Speed</label>
+                <select class="ctrl-select" id="speed-sel" onchange="setSpeed(this.value)" aria-label="Playback Speed">
+                  <option value="0.5">0.5×</option>
+                  <option value="0.75">0.75×</option>
+                  <option value="1" selected>1× (Normal)</option>
+                  <option value="1.25">1.25×</option>
+                  <option value="1.5">1.5×</option>
+                  <option value="2">2×</option>
+                </select>
+
+                <!-- Quality selector -->
+                <label for="quality-sel" style="color:rgba(255,255,255,0.6);font-size:0.72rem;margin-left:8px;">🎞️ Quality</label>
+                <select class="ctrl-select" id="quality-sel" aria-label="Video Quality">
+                  <option value="auto" selected>Auto</option>
+                  <option value="hd1080">1080p HD</option>
+                  <option value="hd720">720p</option>
+                  <option value="large">480p</option>
+                  <option value="medium">360p</option>
+                  <option value="small">240p</option>
+                </select>
+
+                <div class="ctrl-spacer"></div>
+                <div class="ctrl-label" id="now-playing-label">▶ Now Playing</div>
+              </div>
+            </div>
+          </div><!-- /player-shell -->
+
+          <!-- Mobile: Open in YouTube App button -->
+          <a class="mobile-yt-btn" id="mobile-yt-btn" href="#" role="button"
+             aria-label="Open in YouTube App">
+            <span style="font-size:1.3rem">▶</span>
+            Open in YouTube App
+          </a>
+
+          <!-- Video info -->
+          <div class="video-info">
+            <div class="video-title-row">
+              <h2 class="video-h1" id="video-h1">Lecture Title</h2>
+            </div>
+            <div class="video-tags">
+              <span class="v-tag" id="video-course-tag">Course</span>
+              <span class="v-tag" id="video-ch-tag">Chapter</span>
+            </div>
+            <div class="video-nav-btns">
+              <button class="btn-nav-vid" id="prev-lec-btn" onclick="prevLec()" aria-label="Previous Lecture">
+                ← Previous
+              </button>
+              <button class="btn-nav-vid" id="next-lec-btn" onclick="nextLec()" aria-label="Next Lecture">
+                Next →
+              </button>
+            </div>
+            <button class="btn-take-quiz" onclick="startLecQuiz()" aria-label="Take Quiz">
+              🧠 Take Quiz for this Lecture
+            </button>
+          </div>
+        </div><!-- /LEFT -->
+
+        <!-- RIGHT: Sidebar -->
+        <div>
+          <div class="sidebar-card" role="complementary" aria-label="Lecture Playlist">
+            <div class="sidebar-head">📋 Chapter Playlist</div>
+            <div class="sidebar-list" id="sidebar-list"></div>
+          </div>
+        </div>
+
+      </div><!-- /video-layout -->
+    </div>
+  </div><!-- /video-page -->
+
+  <!-- ══════════════════════════ QUIZ PAGE ══════════════════════════ -->
+  <div id="quiz-page" class="page">
+    <div style="padding:0 24px; max-width:760px; margin:0 auto;">
+
+      <div class="quiz-hero">
+        <h2 id="quiz-hero-title">Quiz Time! 🧠</h2>
+        <p id="quiz-hero-sub">Answer carefully, Jasmin!</p>
+      </div>
+
+      <div class="quiz-meta">
+        <span class="q-counter" id="q-counter">1 / 5</span>
+        <div class="q-prog-bar">
+          <div class="q-prog-fill" id="q-prog-fill" style="width:20%"></div>
+        </div>
+        <span class="q-score-live" id="q-score-live">Score: 0</span>
+      </div>
+
+      <div class="question-card" id="question-card">
+        <div class="q-text" id="q-text" lang="bn"></div>
+        <div class="options-list" id="opts-list"></div>
+        <div class="feedback-box" id="feedback-box"></div>
+      </div>
+
+      <button class="btn-next-q" id="btn-next-q" onclick="nextQuestion()">
+        Next Question →
+      </button>
+
+    </div>
+  </div><!-- /quiz-page -->
+
+  <!-- ══════════════════════════ RESULT PAGE ══════════════════════════ -->
+  <div id="result-page" class="page">
+    <div style="padding:0 24px; max-width:680px; margin:0 auto;">
+      <div class="result-card">
+        <span class="result-emoji" id="res-emoji">🎉</span>
+        <h2 class="result-title">Quiz Complete!</h2>
+        <div class="result-score-big" id="res-score">0</div>
+        <div class="result-of" id="res-of">out of 5</div>
+        <div class="result-msg" id="res-msg" lang="bn"></div>
+
+        <!-- Chart -->
+        <div class="score-chart">
+          <div class="score-chart-title">Score History</div>
+          <div class="chart-bars" id="res-chart"></div>
+        </div>
+
+        <div class="result-actions">
+          <button class="btn-res secondary" id="res-retry-btn">🔄 Retry</button>
+          <button class="btn-res primary"   id="res-continue-btn">Continue →</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- /result-page -->
+
+  <!-- ══════════════════════════ DASHBOARD PAGE ══════════════════════════ -->
+  <div id="dashboard-page" class="page">
+    <div style="padding:0 24px; max-width:1100px; margin:0 auto;">
+
+      <div style="padding-top:24px;">
+        <div class="dash-hero">
+          <h2>🌸 Jasmin's Progress Dashboard</h2>
+          <p>Science is beautiful… but not more than you 💖</p>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-card">
+          <span class="dash-icon">📹</span>
+          <span class="dash-num" id="dash-watched">0</span>
+          <span class="dash-label">Lectures Watched</span>
+        </div>
+        <div class="dash-card">
+          <span class="dash-icon">✅</span>
+          <span class="dash-num" id="dash-quizzes">0</span>
+          <span class="dash-label">Quizzes Done</span>
+        </div>
+        <div class="dash-card">
+          <span class="dash-icon">⭐</span>
+          <span class="dash-num" id="dash-avg">0%</span>
+          <span class="dash-label">Average Score</span>
+        </div>
+        <div class="dash-card">
+          <span class="dash-icon">🔥</span>
+          <span class="dash-num" id="dash-streak">0</span>
+          <span class="dash-label">Day Streak</span>
+        </div>
+      </div>
+
+      <div class="prog-section">
+        <h3>Chapter Progress</h3>
+        <div id="dash-prog-list"></div>
+      </div>
+
+      <div class="hist-section">
+        <h3>Score History</h3>
+        <div id="dash-hist-list">
+          <p style="color:var(--text-muted);font-size:0.85rem;">No quizzes yet. Start learning! 📚</p>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /dashboard-page -->
+
+</div><!-- /app -->
+
+<!-- ─── POPUP ─── -->
+<div class="popup-overlay" id="popup-overlay" role="dialog" aria-modal="true" aria-label="Achievement">
+  <div class="popup-card">
+    <span class="popup-emoji" id="popup-emoji">🍽️</span>
+    <h2 class="popup-title" id="popup-title">Surprise!</h2>
+    <p class="popup-msg"   id="popup-msg">You unlocked something!</p>
+    <button class="btn-popup" onclick="closePopup()">💖 Yay!</button>
+  </div>
+</div>
+
+<!-- ─── CONFETTI ─── -->
+<div class="confetti-wrap" id="confetti-wrap" aria-hidden="true"></div>
+
+<!-- ─── JavaScript ─── -->
+<script src="app.js"></script>
+
+<!-- Speed control via postMessage to YouTube iframe -->
+<script>
+  function setSpeed(val) {
+    // YouTube iframe API postMessage for playback rate
+    const iframe = document.getElementById('yt-frame');
+    if (!iframe || !iframe.contentWindow) return;
+    try {
+      iframe.contentWindow.postMessage(JSON.stringify({
+        event: 'command',
+        func: 'setPlaybackRate',
+        args: [parseFloat(val)]
+      }), '*');
+    } catch(e) {}
+  }
+</script>
+
+</body>
+</html>
