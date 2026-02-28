@@ -166,7 +166,7 @@
           <div class="player-shell" id="player-shell" oncontextmenu="return false;">
 
             <!-- YouTube embed iframe -->
-            <div class="player-yt-wrap">
+            <div class="player-yt-wrap" id="player-yt-wrap">
               <iframe
                 id="yt-frame"
                 title="Lecture Video"
@@ -193,7 +193,7 @@
 
                 <!-- Quality selector -->
                 <label for="quality-sel" style="color:rgba(255,255,255,0.6);font-size:0.72rem;margin-left:8px;">🎞️ Quality</label>
-                <select class="ctrl-select" id="quality-sel" aria-label="Video Quality">
+                <select class="ctrl-select" id="quality-sel" onchange="setQuality(this.value)" aria-label="Video Quality">
                   <option value="auto" selected>Auto</option>
                   <option value="hd1080">1080p HD</option>
                   <option value="hd720">720p</option>
@@ -208,11 +208,11 @@
             </div>
           </div><!-- /player-shell -->
 
-          <!-- Mobile: Open in YouTube App button -->
-          <a class="mobile-yt-btn" id="mobile-yt-btn" href="#" role="button"
-             aria-label="Open in YouTube App">
+          <!-- Open in YouTube button -->
+          <a class="mobile-yt-btn" id="mobile-yt-btn" href="#" target="_blank" rel="noopener noreferrer" role="button"
+             aria-label="Open in YouTube">
             <span style="font-size:1.3rem">▶</span>
-            Open in YouTube App
+            Open in YouTube
           </a>
 
           <!-- Video info -->
@@ -371,21 +371,7 @@
 <!-- ─── JavaScript ─── -->
 <script src="app.js"></script>
 
-<!-- Speed control via postMessage to YouTube iframe -->
-<script>
-  function setSpeed(val) {
-    // YouTube iframe API postMessage for playback rate
-    const iframe = document.getElementById('yt-frame');
-    if (!iframe || !iframe.contentWindow) return;
-    try {
-      iframe.contentWindow.postMessage(JSON.stringify({
-        event: 'command',
-        func: 'setPlaybackRate',
-        args: [parseFloat(val)]
-      }), '*');
-    } catch(e) {}
-  }
-</script>
+<!-- Speed & Quality are handled via YT.Player API in app.js -->
 
 </body>
 </html>
