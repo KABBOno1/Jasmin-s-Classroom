@@ -1,166 +1,144 @@
 /* ============================================================
-   JASMIN'S BIOLOGY CLASSROOM — app.js
-   Full LMS logic: navigation, video, quiz, dashboard, animations
+   JESMIN'S BIOLOGY CLASSROOM — app.js  (FINAL FIXED VERSION)
+   All buttons work, random quiz order, random option order,
+   English flirting lines for Jesmin, no speed/quality controls
    ============================================================ */
 
 'use strict';
 
 // ══════════════════════════════════════════════════════════════
-// DATA — COURSES, CHAPTERS, LECTURES
+// DATA
 // ══════════════════════════════════════════════════════════════
 const COURSES = {
   bio1: {
-    id: 'bio1',
-    title: 'Biology 1st Paper',
-    tag: 'Plant Biology & Physiology',
-    icon: '🔬',
-    color: 'linear-gradient(145deg, #4f0ba8, #7c1dff, #a855f7)',
+    id: 'bio1', title: 'Biology 1st Paper', tag: 'Plant Biology & Physiology', icon: '🔬',
     chapters: [
-      {
-        id: 'ch6', num: '6', name: 'Chapter 6: Bryophyta & Pteridophyta',
+      { id: 'ch6',  num: '06', name: 'Chapter 06: ব্রায়োফাইটা ও টেরেডোফাইটা',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=WYFMMG1k7iA' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=6QpnA67PAOo' },
-        ]
-      },
-      {
-        id: 'ch8', num: '8', name: 'Chapter 8: Tissue & Tissue Systems',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=WYFMMG1k7iA' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=6QpnA67PAOo' },
+        ]},
+      { id: 'ch8',  num: '08', name: 'Chapter 08: টিস্যু ও টিস্যুতন্ত্র',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=5Q5r6Aq24yw' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=NvSjdgcaot4' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=hx9TzlMSga0' },
-        ]
-      },
-      {
-        id: 'ch9', num: '9', name: 'Chapter 9: Plant Physiology',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=5Q5r6Aq24yw' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=NvSjdgcaot4' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=hx9TzlMSga0' },
+        ]},
+      { id: 'ch9',  num: '09', name: 'Chapter 09: উদ্ভিদ শারীরতত্ত্ব',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=p_FlTEEWChk' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=agHqxhAFpyI' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=hL1rDygkchg' },
-          { id: 'l3', title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=2aBnzC-Pmm4' },
-          { id: 'l4', title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=679FGC5AzFs' },
-          { id: 'l5', title: 'Lecture 6', url: 'https://www.youtube.com/watch?v=gNhlayKe8fQ' },
-          { id: 'l6', title: 'Lecture 7', url: 'https://www.youtube.com/watch?v=aFPkAIP0Yzc' },
-        ]
-      },
-      {
-        id: 'ch10', num: '10', name: 'Chapter 10: Plant Reproduction',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=p_FlTEEWChk' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=agHqxhAFpyI' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=hL1rDygkchg' },
+          { title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=2aBnzC-Pmm4' },
+          { title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=679FGC5AzFs' },
+          { title: 'Lecture 6', url: 'https://www.youtube.com/watch?v=gNhlayKe8fQ' },
+          { title: 'Lecture 7', url: 'https://www.youtube.com/watch?v=aFPkAIP0Yzc' },
+        ]},
+      { id: 'ch10', num: '10', name: 'Chapter 10: উদ্ভিদ প্রজনন',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=Fdpw66cYgsU' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=O0qBwUVeP1A' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=7ju9cySlcyk' },
-          { id: 'l3', title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=sT2cTncV1wg' },
-        ]
-      },
-      {
-        id: 'ch11', num: '11', name: 'Chapter 11: Biotechnology',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=Fdpw66cYgsU' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=O0qBwUVeP1A' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=7ju9cySlcyk' },
+          { title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=sT2cTncV1wg' },
+        ]},
+      { id: 'ch11', num: '11', name: 'Chapter 11: জীবপ্রযুক্তি',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=zJ4h1wMDwFE' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=t2IioVEE43Q' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=eYgUCcG3qTM' },
-          { id: 'l3', title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=7k6kJEuQOFE' },
-        ]
-      },
-      {
-        id: 'ch12', num: '12', name: 'Chapter 12: Ecology & Environment',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=zJ4h1wMDwFE' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=t2IioVEE43Q' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=eYgUCcG3qTM' },
+          { title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=7k6kJEuQOFE' },
+        ]},
+      { id: 'ch12', num: '12', name: 'Chapter 12: জীবের পরিবেশ, বিস্তার ও সংরক্ষণ',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=ySTZ7cYMNDM' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=GMvoJnTDxgs' },
-        ]
-      },
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=ySTZ7cYMNDM' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=GMvoJnTDxgs' },
+        ]},
+      { id: 'rev', num: '📋', name: 'Revision Classes',
+        lectures: [
+          { title: 'Chapter 9 | One Shot Class', url: 'https://www.youtube.com/watch?v=11FAVSk2Jdo' },
+          { title: 'Chapter 1 | One Shot Class',  url: 'https://www.youtube.com/watch?v=-EXCix7l-0k' },
+          { title: 'Revision Class 1',             url: 'https://www.youtube.com/watch?v=835kKWeIMJk' },
+        ]},
     ]
   },
   bio2: {
-    id: 'bio2',
-    title: 'Biology 2nd Paper',
-    tag: 'Animal Biology & Zoology',
-    icon: '🧬',
-    color: 'linear-gradient(145deg, #9d0636, #e8195a, #ff5c8a)',
+    id: 'bio2', title: 'Biology 2nd Paper', tag: 'Animal Biology & Zoology', icon: '🧬',
     chapters: [
-      {
-        id: 'ch5', num: '5', name: 'Chapter 5: Protista & Fungi',
+      { id: 'ch5',  num: '05', name: 'Chapter 05: শ্বাসক্রিয়া ও শ্বসন',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=-fqJW3RDcVk' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=XuCvTb2MFS8' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=P7XaKxZUCwU' },
-          { id: 'l3', title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=GTRoKF1SEQk' },
-        ]
-      },
-      {
-        id: 'ch6', num: '6', name: 'Chapter 6: Animal Classification',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=-fqJW3RDcVk' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=XuCvTb2MFS8' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=P7XaKxZUCwU' },
+          { title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=GTRoKF1SEQk' },
+        ]},
+      { id: 'ch6',  num: '06', name: 'Chapter 06: বর্জ্য ও নিষ্কাশন',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=k43gVoqpyDw' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=b-gFgKQeDOY' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=18YVA4bhXp8' },
-        ]
-      },
-      {
-        id: 'ch7', num: '7', name: 'Chapter 7: Hydra',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=k43gVoqpyDw' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=b-gFgKQeDOY' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=18YVA4bhXp8' },
+        ]},
+      { id: 'ch7',  num: '07', name: 'Chapter 07: চলন ও অঙ্গচালনা',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=8q3uIjjTwWI' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=PQKDlAO8nAo' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=KDVb5kmpUXY' },
-          { id: 'l3', title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=DgT5Kng-qCI' },
-          { id: 'l4', title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=rKapl2pohIY' },
-        ]
-      },
-      {
-        id: 'ch8', num: '8', name: 'Chapter 8: Rui Fish',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=8q3uIjjTwWI' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=PQKDlAO8nAo' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=KDVb5kmpUXY' },
+          { title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=DgT5Kng-qCI' },
+          { title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=rKapl2pohIY' },
+        ]},
+      { id: 'ch8',  num: '08', name: 'Chapter 08: সমন্বয় ও নিয়ন্ত্রণ',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=16bRqOnsoy0' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=-5MWnRMyPHY' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=0glvuvOiFQ4' },
-          { id: 'l3', title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=k1jYGYWJMQU' },
-          { id: 'l4', title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=lxn2yUiKUSU' },
-          { id: 'l5', title: 'Lecture 6', url: 'https://www.youtube.com/watch?v=Ns7sCwSd3A4' },
-          { id: 'l6', title: 'Lecture 7', url: 'https://www.youtube.com/watch?v=NDEr087qSxY' },
-        ]
-      },
-      {
-        id: 'ch9', num: '9', name: 'Chapter 9: Grasshopper',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=16bRqOnsoy0' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=-5MWnRMyPHY' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=0glvuvOiFQ4' },
+          { title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=k1jYGYWJMQU' },
+          { title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=lxn2yUiKUSU' },
+          { title: 'Lecture 6', url: 'https://www.youtube.com/watch?v=Ns7sCwSd3A4' },
+          { title: 'Lecture 7', url: 'https://www.youtube.com/watch?v=NDEr087qSxY' },
+        ]},
+      { id: 'ch9',  num: '09', name: 'Chapter 09: মানব জীবনের ধারাবাহিকতা',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=UC8RlwsvO1c' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=pmXzozslnvg' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=uQTb-9OBgLQ' },
-          { id: 'l3', title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=PRdEr9cAZ0A' },
-          { id: 'l4', title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=KkRoZW3jozI' },
-          { id: 'l5', title: 'Lecture 6', url: 'https://www.youtube.com/watch?v=BzRxIbmCTB8' },
-          { id: 'l6', title: 'Lecture 7', url: 'https://www.youtube.com/watch?v=l84mYT-_qx8' },
-        ]
-      },
-      {
-        id: 'ch10', num: '10', name: 'Chapter 10: Human Physiology',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=UC8RlwsvO1c' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=pmXzozslnvg' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=uQTb-9OBgLQ' },
+          { title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=PRdEr9cAZ0A' },
+          { title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=KkRoZW3jozI' },
+          { title: 'Lecture 6', url: 'https://www.youtube.com/watch?v=BzRxIbmCTB8' },
+          { title: 'Lecture 7', url: 'https://www.youtube.com/watch?v=l84mYT-_qx8' },
+        ]},
+      { id: 'ch10', num: '10', name: 'Chapter 10: মানবদেহের প্রতিরক্ষা',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=82dJsxPWO7E' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=cBBh1MHIiHY' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=Eo99wNNwqWI' },
-          { id: 'l3', title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=QY_giJxXG48' },
-        ]
-      },
-      {
-        id: 'ch11', num: '11', name: 'Chapter 11: Sense Organs',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=82dJsxPWO7E' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=cBBh1MHIiHY' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=Eo99wNNwqWI' },
+          { title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=QY_giJxXG48' },
+        ]},
+      { id: 'ch11', num: '11', name: 'Chapter 11: জীনতত্ত্ব ও বিবর্তন',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=i1D8FXfpYZY' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=Z3EeZRGhbGs' },
-          { id: 'l2', title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=9uTYTP220zc' },
-          { id: 'l3', title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=MhbV6K8OFAc' },
-          { id: 'l4', title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=Qr-Y5CxTwhs' },
-          { id: 'l5', title: 'Lecture 6', url: 'https://www.youtube.com/watch?v=tzBxl2jZchQ' },
-        ]
-      },
-      {
-        id: 'ch12', num: '12', name: 'Chapter 12: Human Reproduction',
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=i1D8FXfpYZY' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=Z3EeZRGhbGs' },
+          { title: 'Lecture 3', url: 'https://www.youtube.com/watch?v=9uTYTP220zc' },
+          { title: 'Lecture 4', url: 'https://www.youtube.com/watch?v=MhbV6K8OFAc' },
+          { title: 'Lecture 5', url: 'https://www.youtube.com/watch?v=Qr-Y5CxTwhs' },
+          { title: 'Lecture 6', url: 'https://www.youtube.com/watch?v=tzBxl2jZchQ' },
+        ]},
+      { id: 'ch12', num: '12', name: 'Chapter 12: প্রাণী আচরণ',
         lectures: [
-          { id: 'l0', title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=kqLVSwOy8nM' },
-          { id: 'l1', title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=Rd5qZiCqbzY' },
-        ]
-      },
+          { title: 'Lecture 1', url: 'https://www.youtube.com/watch?v=kqLVSwOy8nM' },
+          { title: 'Lecture 2', url: 'https://www.youtube.com/watch?v=Rd5qZiCqbzY' },
+        ]},
+      { id: 'rev', num: '📋', name: 'Revision Classes',
+        lectures: [
+          { title: 'প্রাণিবৈচিত্র্য ও শ্রেণিবিন্যাস (1)', url: 'https://www.youtube.com/watch?v=BfSlSOL7UsA' },
+          { title: 'Suggestion Class',                       url: 'https://www.youtube.com/watch?v=K2gRsGZ5Bm8' },
+          { title: 'প্রাণিবৈচিত্র্য ও শ্রেণিবিন্যাস (2)', url: 'https://www.youtube.com/watch?v=R2nbLd-28hc' },
+          { title: 'হাইড্রা, রুইমাছ ও ঘাসফড়িং',           url: 'https://www.youtube.com/watch?v=BeUFiqJnjnc' },
+        ]},
     ]
   }
 };
 
 // ══════════════════════════════════════════════════════════════
-// QUIZ DATA — ALL IN BANGLA
+// QUIZ DATA
 // ══════════════════════════════════════════════════════════════
 const QUIZZES = {
   'bio1-ch6': [
@@ -264,44 +242,91 @@ const QUIZZES = {
 };
 
 // ══════════════════════════════════════════════════════════════
-// APP STATE
+// FLIRT CONTENT — English, for Jesmin
+// ══════════════════════════════════════════════════════════════
+const FLIRT_LINES = [
+  "Jesmin, even biology can't explain how perfectly you're made 🌸",
+  "Every lecture you finish makes me more proud of you, Jesmin 💖",
+  "Honestly Jesmin, you're harder to study than biology — and way more interesting 😌",
+  "Jesmin, your dedication to learning is almost as beautiful as you are 💜",
+  "If beauty was a chapter, Jesmin, you'd be the whole textbook 📚✨",
+  "Study hard, Jesmin — smart is the most attractive thing you can be 😍",
+  "Jesmin, mitosis couldn't divide my admiration for you even if it tried 🔬💕",
+  "You're the kind of girl who makes someone want to ace every quiz, Jesmin 😉",
+  "Jesmin, you're my favorite subject — way more fascinating than biology 🧬💖",
+  "If effort were a gene, Jesmin, you'd have the dominant allele 🧬",
+  "Jesmin, watching you grow smarter every day is literally my favorite thing 💕",
+  "You make learning look effortless and beautiful, Jesmin 🌺",
+  "Jesmin, your brain is just as beautiful as your smile 😌💜",
+  "Science explains a lot — but not how amazing you are, Jesmin 🌸",
+  "Jesmin, every right answer you get makes me fall for you all over again 💖",
+];
+const RESULT_MSGS = {
+  low: [
+    "Hey Jesmin, that wasn't your best — but I believe in you more than you believe in yourself 💖 Try again!",
+    "Jesmin, even the brightest stars have cloudy nights 🌙 You've got this. Let's try once more 💕",
+    "Don't worry Jesmin, every wrong answer is just a step closer to getting it right 🌸 You're doing amazing.",
+    "Jesmin, stumbling is just part of the journey 💜 Get back up and go again — I'll be rooting for you!",
+    "Hey beautiful mind — even biology takes time to click 🌺 You're not behind, you're just building up 💖",
+  ],
+  mid: [
+    "Not bad at all, Jesmin! You're getting there — and honestly that's impressive 😌💜",
+    "Jesmin, you're so close to perfect. One more round and you'll nail it 🌸💕",
+    "Pretty good, Jesmin! Your brain works as beautifully as you do 🌺 Keep going!",
+    "Jesmin, you're already 80% perfect — and the other 20%? Just practice 💖",
+    "You passed, Jesmin! Now let's make it a perfect score — I know you can 😍",
+  ],
+  high: [
+    "Jesmin, that's my girl! 💖 A perfect score AND stunning? Truly unfair to the rest of us 😌",
+    "I knew you could do it, Jesmin! You're brilliant and I'm SO proud of you 🌸✨",
+    "Okay Jesmin, at this point you're just showing off — and I absolutely love it 💜😍",
+    "Full marks?! Jesmin, your brain is literally my favorite thing about you 🧬💕 So proud!",
+    "Jesmin, you just aced it like it was nothing 💖 You're incredible — don't ever forget that 🌺",
+    "Top score, Jesmin! You study hard AND you're amazing — a truly dangerous combination 😌✨",
+  ],
+};
+const HOME_FLIRT = [
+  "Study hard, impress me later 😌",
+  "Jesmin's brilliance loading... 💜",
+  "The smartest girl I know 🌸",
+  "Making biology look beautiful ✨",
+  "Unstoppable energy, Jesmin 💕",
+  "Your dedication > everything 🌺",
+  "Brains AND beauty — that's Jesmin 😍",
+  "Born to excel, just like you 🌸",
+  "Roses are red, biology is cool — but nothing beats you, Jesmin 💜",
+];
+
+function randFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function getResultMsg(pct) {
+  return randFrom(pct < 50 ? RESULT_MSGS.low : pct < 80 ? RESULT_MSGS.mid : RESULT_MSGS.high);
+}
+
+// ══════════════════════════════════════════════════════════════
+// STATE
 // ══════════════════════════════════════════════════════════════
 const state = {
   dark: false,
-  currentCourse: null,
-  currentChapterIdx: null,
-  currentLectureIdx: null,
-  currentYtUrl: null,
+  currentCourse: null, currentChapterIdx: null, currentLectureIdx: null,
   quiz: { key: null, questions: [], currentQ: 0, score: 0, retryFn: null },
-  progress: {},      // key: `${courseId}-${chId}-${li}` => true
-  quizHistory: [],   // [{label, score, total, date}]
-  streak: 0,
-  lastVisit: null,
+  progress: {}, quizHistory: [], streak: 0, lastVisit: null,
 };
 
 // ══════════════════════════════════════════════════════════════
 // PERSISTENCE
 // ══════════════════════════════════════════════════════════════
 function save() {
-  try {
-    localStorage.setItem('jbc-v2', JSON.stringify({
-      progress: state.progress,
-      quizHistory: state.quizHistory,
-      streak: state.streak,
-      lastVisit: state.lastVisit,
-      dark: state.dark,
-    }));
-  } catch (e) {}
+  try { localStorage.setItem('jbc-v3', JSON.stringify({ progress: state.progress, quizHistory: state.quizHistory, streak: state.streak, lastVisit: state.lastVisit, dark: state.dark })); } catch(e) {}
 }
 function load() {
   try {
-    const d = JSON.parse(localStorage.getItem('jbc-v2') || '{}');
+    const d = JSON.parse(localStorage.getItem('jbc-v3') || '{}');
     state.progress    = d.progress    || {};
     state.quizHistory = d.quizHistory || [];
     state.streak      = d.streak      || 0;
     state.lastVisit   = d.lastVisit   || null;
     state.dark        = d.dark        || false;
-  } catch (e) {}
+  } catch(e) {}
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -311,20 +336,15 @@ function ytId(url) {
   const m = url.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/);
   return m ? m[1] : '';
 }
-function isMobile() {
-  return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-}
-// Total / done for a course
 function courseProgress(cid) {
-  const c = COURSES[cid];
-  let total = 0, done = 0;
-  c.chapters.forEach(ch => {
-    ch.lectures.forEach((_, li) => {
-      total++;
-      if (state.progress[`${cid}-${ch.id}-${li}`]) done++;
-    });
-  });
+  const c = COURSES[cid]; let total = 0, done = 0;
+  c.chapters.forEach(ch => ch.lectures.forEach((_, li) => { total++; if (state.progress[`${cid}-${ch.id}-${li}`]) done++; }));
   return { total, done, pct: total ? Math.round(done / total * 100) : 0 };
+}
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -336,7 +356,6 @@ function navigate(page, param) {
   if (!el) return;
   el.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-
   if (page === 'home')      renderHome();
   if (page === 'course')  { state.currentCourse = param; renderCourse(); }
   if (page === 'dashboard') renderDashboard();
@@ -344,91 +363,95 @@ function navigate(page, param) {
 window.navigate = navigate;
 
 // ══════════════════════════════════════════════════════════════
-// HOME PAGE
+// HOME
 // ══════════════════════════════════════════════════════════════
 function renderHome() {
-  ['bio1', 'bio2'].forEach(cid => {
+  ['bio1','bio2'].forEach(cid => {
     const { pct } = courseProgress(cid);
-    const fill = document.getElementById(`${cid}-fill`);
-    const pctEl = document.getElementById(`${cid}-pct`);
-    if (fill)  fill.style.width = pct + '%';
-    if (pctEl) pctEl.textContent = pct + '%';
+    const f = document.getElementById(cid + '-fill');
+    const p = document.getElementById(cid + '-pct');
+    if (f) f.style.width = pct + '%';
+    if (p) p.textContent = pct + '%';
   });
-
-  // Overall completed %
-  let allTotal = 0, allDone = 0;
-  Object.values(COURSES).forEach(c => {
-    const p = courseProgress(c.id);
-    allTotal += p.total; allDone += p.done;
-  });
+  let t = 0, d = 0;
+  Object.values(COURSES).forEach(c => { const p = courseProgress(c.id); t += p.total; d += p.done; });
   const el = document.getElementById('all-pct');
-  if (el) el.textContent = allTotal ? Math.round(allDone / allTotal * 100) + '%' : '0%';
-
+  if (el) el.textContent = t ? Math.round(d / t * 100) + '%' : '0%';
   document.getElementById('streak-count').textContent = state.streak;
+  const ft = document.querySelector('.flirty-tag');
+  if (ft) ft.textContent = randFrom(HOME_FLIRT);
 }
 
 // ══════════════════════════════════════════════════════════════
 // COURSE PAGE
 // ══════════════════════════════════════════════════════════════
 function renderCourse() {
-  const cid = state.currentCourse;
-  const course = COURSES[cid];
+  const cid = state.currentCourse, course = COURSES[cid];
   document.getElementById('course-page-title').textContent = course.title;
-  document.getElementById('course-page-tag').textContent = course.tag;
-  const btn = document.getElementById('course-back-btn');
-  if (btn) btn.onclick = () => navigate('home');
+  document.getElementById('course-page-tag').textContent   = course.tag;
+  const backBtn = document.getElementById('course-back-btn');
+  if (backBtn) backBtn.onclick = () => navigate('home');
 
   const container = document.getElementById('chapters-container');
   container.innerHTML = '';
+
   course.chapters.forEach((ch, ci) => {
     const total = ch.lectures.length;
     const done  = ch.lectures.filter((_, li) => state.progress[`${cid}-${ch.id}-${li}`]).length;
     const pct   = Math.round(done / total * 100);
-    const card  = document.createElement('div');
+
+    const lectureHTML = ch.lectures.map((lec, li) => {
+      const w = state.progress[`${cid}-${ch.id}-${li}`];
+      return `<div class="lecture-item${w?' completed':''}" onclick="openVideo('${cid}','${ch.id}',${ci},${li})">
+        <div class="l-icon">${w ? '✓' : li + 1}</div>
+        <span class="l-text">${lec.title}</span>
+        ${w ? '<span class="l-check">✓</span>' : ''}
+      </div>`;
+    }).join('');
+
+    const completeTag = pct === 100
+      ? `<span class="ch-sub-dot"></span><span style="color:var(--mint);font-weight:700">✓ Done!</span>`
+      : '';
+
+    const card = document.createElement('div');
     card.className = 'chapter-card';
     card.style.animationDelay = (ci * 0.07) + 's';
     card.innerHTML = `
       <div class="chapter-header" onclick="toggleChapter(this)">
         <div class="ch-left">
           <div class="ch-num">${ch.num}</div>
-          <div>
+          <div class="ch-info">
             <div class="ch-name">${ch.name}</div>
-            <div class="ch-sub">${done}/${total} lectures &nbsp;•&nbsp; ${pct}%</div>
+            <div class="ch-sub">
+              <span>📹 ${total} lectures</span>
+              <span class="ch-sub-dot"></span>
+              <span>${done} done</span>
+              ${completeTag}
+            </div>
           </div>
         </div>
         <div class="ch-right">
           <div class="ch-prog-mini">
+            <div class="ch-prog-label">${pct}%</div>
             <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
           </div>
-          <span class="ch-chevron">▾</span>
+          <div class="ch-chevron">▾</div>
         </div>
       </div>
       <div class="chapter-body">
-        <div class="lectures-grid">
-          ${ch.lectures.map((lec, li) => {
-            const watched = state.progress[`${cid}-${ch.id}-${li}`];
-            return `
-              <div class="lecture-item ${watched ? 'completed' : ''}"
-                   onclick="openVideo('${cid}','${ch.id}',${ci},${li})">
-                <div class="l-icon">${watched ? '✓' : li + 1}</div>
-                <span class="l-text">${lec.title}</span>
-                ${watched ? '<span class="l-check">✓</span>' : ''}
-              </div>`;
-          }).join('')}
+        <div class="lectures-grid">${lectureHTML}</div>
+        <div class="chapter-footer">
+          <span class="chapter-lectures-count">${done} of ${total} watched</span>
+          <button class="btn-ch-quiz" onclick="startQuiz('${cid}','${ch.id}','${ch.name} — Quiz')">📝 Chapter Quiz</button>
         </div>
-        <button class="btn-ch-quiz" onclick="startQuiz('${cid}','${ch.id}','${ch.name} — Quiz')">
-          📝 Chapter Quiz
-        </button>
       </div>`;
     container.appendChild(card);
   });
 }
-window.toggleChapter = function(header) {
-  header.closest('.chapter-card').classList.toggle('open');
-};
+window.toggleChapter = header => header.closest('.chapter-card').classList.toggle('open');
 
 // ══════════════════════════════════════════════════════════════
-// VIDEO PAGE — Fixed YouTube embed
+// VIDEO PAGE
 // ══════════════════════════════════════════════════════════════
 function openVideo(cid, chId, chIdx, lecIdx) {
   state.currentCourse     = cid;
@@ -439,146 +462,132 @@ function openVideo(cid, chId, chIdx, lecIdx) {
   const chapter = course.chapters[chIdx];
   const lecture = chapter.lectures[lecIdx];
   const id      = ytId(lecture.url);
-  state.currentYtUrl = lecture.url;
 
-  // ── Show page ──
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('video-page').classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // ── Back button ──
-  document.getElementById('video-back-btn').onclick = () => navigate('course', cid);
-
-  // ── Titles ──
+  document.getElementById('video-back-btn').onclick      = () => navigate('course', cid);
   document.getElementById('video-page-title').textContent = chapter.name;
-  document.getElementById('video-h1').textContent = `${chapter.name} — ${lecture.title}`;
+  document.getElementById('video-h1').textContent         = `${chapter.name} — ${lecture.title}`;
   document.getElementById('video-course-tag').textContent = course.title;
-  document.getElementById('video-ch-tag').textContent = chapter.name;
+  document.getElementById('video-ch-tag').textContent     = chapter.name;
 
-  // ── YouTube embed (FIXED) ──
-  // Use youtube-nocookie for privacy + rel=0 + modestbranding
-  const iframe = document.getElementById('yt-frame');
-  // Clear first to force reload
-  iframe.src = '';
-  setTimeout(() => {
-    iframe.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&iv_load_policy=3`;
-  }, 80);
+  loadYTPlayer(id);
 
-  // ── Thumbnail overlay ──
-  const thumb = document.getElementById('player-thumb');
-  if (thumb) {
-    thumb.style.backgroundImage = `url(https://img.youtube.com/vi/${id}/maxresdefault.jpg)`;
-  }
-
-  // ── Mobile YouTube app link ──
   const mobileBtn = document.getElementById('mobile-yt-btn');
   if (mobileBtn) {
-    mobileBtn.href   = lecture.url;
-    mobileBtn.target = '_blank';
-    // On mobile devices, try to open YouTube app
-    if (isMobile()) {
-      mobileBtn.href = `youtube://watch?v=${id}`;
-      // Fallback: if app not installed, use web URL
-      mobileBtn.addEventListener('click', function ytMobileClick(e) {
-        e.preventDefault();
-        // Try app first
-        const appUrl = `youtube://watch?v=${id}`;
-        const webUrl = lecture.url;
-        const timeout = setTimeout(() => {
-          window.location.href = webUrl;
-        }, 800);
-        window.location.href = appUrl;
-        this.removeEventListener('click', ytMobileClick);
-        clearTimeout(timeout);
-        // Reset
-        setTimeout(() => { this.addEventListener('click', ytMobileClick); }, 1000);
-      }, { once: true });
-    }
+    const nb = mobileBtn.cloneNode(true);
+    mobileBtn.parentNode.replaceChild(nb, mobileBtn);
+    nb.href = `https://www.youtube.com/watch?v=${id}`;
+    nb.target = '_blank'; nb.rel = 'noopener noreferrer';
   }
 
-  // ── Prev / Next ──
   document.getElementById('prev-lec-btn').disabled = lecIdx === 0;
   document.getElementById('next-lec-btn').disabled = lecIdx === chapter.lectures.length - 1;
-
-  // ── Sidebar ──
   renderSidebar(cid, chIdx, lecIdx);
 
-  // ── Mark as watched after 8 seconds ──
   const watchKey = `${cid}-${chId}-${lecIdx}`;
   if (!state.progress[watchKey]) {
     setTimeout(() => {
       state.progress[watchKey] = true;
-      updateStreak();
-      save();
-      spawnHeart();
-      renderSidebar(cid, chIdx, lecIdx); // refresh sidebar checkmarks
+      updateStreak(); save(); spawnHeart();
+      renderSidebar(cid, chIdx, lecIdx);
       checkCourseComplete(cid);
     }, 8000);
   }
 }
 window.openVideo = openVideo;
 
+// ══════════════════════════════════════════════════════════════
+// YOUTUBE PLAYER API
+// ══════════════════════════════════════════════════════════════
+let ytPlayer = null, ytAPIReady = false, ytPendingId = null;
+
+window.onYouTubeIframeAPIReady = function() {
+  ytAPIReady = true;
+  if (ytPendingId) { createYTPlayer(ytPendingId); ytPendingId = null; }
+};
+
+function loadYTPlayer(videoId) {
+  if (!ytAPIReady) {
+    ytPendingId = videoId;
+    if (!document.getElementById('yt-api-script')) {
+      const s = document.createElement('script');
+      s.id = 'yt-api-script'; s.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(s);
+    }
+  } else if (ytPlayer) {
+    ytPlayer.loadVideoById(videoId);
+  } else {
+    createYTPlayer(videoId);
+  }
+}
+
+function createYTPlayer(videoId) {
+  if (ytPlayer) { try { ytPlayer.destroy(); } catch(e) {} ytPlayer = null; }
+  const wrap = document.getElementById('player-yt-wrap');
+  if (wrap) wrap.innerHTML = '<div id="yt-frame"></div>';
+  ytPlayer = new YT.Player('yt-frame', {
+    videoId,
+    playerVars: { rel: 0, modestbranding: 1, iv_load_policy: 3, playsinline: 1, enablejsapi: 1, origin: location.origin },
+    events: { onReady: () => {} }
+  });
+}
+
 function renderSidebar(cid, chIdx, curLi) {
   const chapter = COURSES[cid].chapters[chIdx];
-  const list    = document.getElementById('sidebar-list');
-  list.innerHTML = chapter.lectures.map((lec, li) => {
-    const watched = state.progress[`${cid}-${chapter.id}-${li}`];
-    return `
-      <div class="sidebar-item ${li === curLi ? 'active' : ''} ${watched ? 'watched' : ''}"
-           onclick="openVideo('${cid}','${chapter.id}',${chIdx},${li})">
-        <div class="si-num">${watched ? '✓' : li + 1}</div>
-        <span class="si-label">${lec.title}</span>
-      </div>`;
+  document.getElementById('sidebar-list').innerHTML = chapter.lectures.map((lec, li) => {
+    const w = state.progress[`${cid}-${chapter.id}-${li}`];
+    return `<div class="sidebar-item${li===curLi?' active':''}${w?' watched':''}" onclick="openVideo('${cid}','${chapter.id}',${chIdx},${li})">
+      <div class="si-num">${w ? '✓' : li + 1}</div>
+      <span class="si-label">${lec.title}</span>
+    </div>`;
   }).join('');
 }
 
-window.prevLec = function() {
+window.prevLec = () => {
   if (state.currentLectureIdx > 0) {
     const ch = COURSES[state.currentCourse].chapters[state.currentChapterIdx];
     openVideo(state.currentCourse, ch.id, state.currentChapterIdx, state.currentLectureIdx - 1);
   }
 };
-window.nextLec = function() {
+window.nextLec = () => {
   const ch = COURSES[state.currentCourse].chapters[state.currentChapterIdx];
-  if (state.currentLectureIdx < ch.lectures.length - 1) {
+  if (state.currentLectureIdx < ch.lectures.length - 1)
     openVideo(state.currentCourse, ch.id, state.currentChapterIdx, state.currentLectureIdx + 1);
-  }
 };
-window.startLecQuiz = function() {
+window.startLecQuiz = () => {
   const ch = COURSES[state.currentCourse].chapters[state.currentChapterIdx];
   startQuiz(state.currentCourse, ch.id, `${ch.name} — Quiz`);
 };
 
 // ══════════════════════════════════════════════════════════════
-// QUIZ SYSTEM
+// QUIZ — Random order + random options
 // ══════════════════════════════════════════════════════════════
+function shuffleOptions(q) {
+  const indexed = q.opts.map((opt, i) => ({ opt, correct: i === q.ans }));
+  const shuffled = shuffle(indexed);
+  return { q: q.q, opts: shuffled.map(o => o.opt), ans: shuffled.findIndex(o => o.correct) };
+}
+
 function startQuiz(cid, chId, label) {
-  const key  = `${cid}-${chId}`;
-  const data = QUIZZES[key];
-  if (!data) {
-    alert('This chapter\'s quiz is coming soon!');
-    return;
-  }
-  const qs = [...data].sort(() => Math.random() - 0.5);
-  state.quiz = {
-    key, label,
-    questions: qs, currentQ: 0, score: 0,
-    retryFn: () => startQuiz(cid, chId, label),
-  };
+  const key = `${cid}-${chId}`, data = QUIZZES[key];
+  if (!data) { alert("This chapter's quiz is coming soon! 🌸"); return; }
+  const qs = shuffle(data).map(shuffleOptions);
+  state.quiz = { key, label, questions: qs, currentQ: 0, score: 0, retryFn: () => startQuiz(cid, chId, label) };
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('quiz-page').classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
   document.getElementById('quiz-hero-title').textContent = 'Quiz Time! 🧠';
-  document.getElementById('quiz-hero-sub').textContent  = label;
+  document.getElementById('quiz-hero-sub').textContent   = label;
   renderQuestion();
 }
 window.startQuiz = startQuiz;
 
 function renderQuestion() {
   const { questions, currentQ, score } = state.quiz;
-  const q     = questions[currentQ];
-  const total = questions.length;
-
+  const q = questions[currentQ], total = questions.length;
   document.getElementById('q-counter').textContent    = `${currentQ + 1} / ${total}`;
   document.getElementById('q-score-live').textContent = `Score: ${score}`;
   document.getElementById('q-prog-fill').style.width  = `${((currentQ + 1) / total) * 100}%`;
@@ -586,11 +595,11 @@ function renderQuestion() {
 
   const optsEl = document.getElementById('opts-list');
   optsEl.innerHTML = '';
-  ['ক', 'খ', 'গ', 'ঘ'].slice(0, q.opts.length).forEach((letter, i) => {
+  ['ক','খ','গ','ঘ'].slice(0, q.opts.length).forEach((letter, i) => {
     const btn = document.createElement('button');
-    btn.className = 'opt-btn';
+    btn.className   = 'opt-btn';
     btn.textContent = `${letter}. ${q.opts[i]}`;
-    btn.onclick = () => pickAnswer(i, btn);
+    btn.onclick     = () => pickAnswer(i, btn);
     optsEl.appendChild(btn);
   });
 
@@ -599,86 +608,55 @@ function renderQuestion() {
 }
 
 function pickAnswer(idx, btn) {
-  const q = state.quiz.questions[state.quiz.currentQ];
-  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
-
-  const correct = q.ans;
+  const q = state.quiz.questions[state.quiz.currentQ], correct = q.ans;
   const allBtns = document.querySelectorAll('.opt-btn');
+  allBtns.forEach(b => b.disabled = true);
   allBtns[correct].classList.add('correct');
   if (idx !== correct) btn.classList.add('wrong');
   else state.quiz.score++;
-
   document.getElementById('q-score-live').textContent = `Score: ${state.quiz.score}`;
 
   const fb = document.getElementById('feedback-box');
   if (idx === correct) {
     fb.className   = 'feedback-box show feedback-ok';
-    fb.textContent = '✅ Correct! Amazing!';
+    fb.textContent = randFrom(['✅ Correct! Brilliant, Jesmin! 💜', '✅ Yes! You knew that! 🌸', '✅ Perfect! That big brain 😌✨', '✅ Exactly right, Jesmin! 💕', '✅ Amazing! You\'re on fire, Jesmin! 🔥']);
   } else {
     fb.className   = 'feedback-box show feedback-bad';
-    fb.textContent = `❌ Wrong. Correct answer: ${['ক','খ','গ','ঘ'][correct]}`;
+    fb.textContent = `❌ The answer was ${ ['ক','খ','গ','ঘ'][correct] }. You'll get the next one, Jesmin! 💕`;
   }
-
   document.getElementById('btn-next-q').className = 'btn-next-q show';
 }
 window.pickAnswer = pickAnswer;
 
-window.nextQuestion = function() {
+window.nextQuestion = () => {
   state.quiz.currentQ++;
-  if (state.quiz.currentQ >= state.quiz.questions.length) {
-    showResult();
-  } else {
-    renderQuestion();
-  }
+  state.quiz.currentQ >= state.quiz.questions.length ? showResult() : renderQuestion();
 };
 
 function showResult() {
   const { score, questions, label } = state.quiz;
-  const total = questions.length;
-  const pct   = Math.round((score / total) * 100);
-
+  const total = questions.length, pct = Math.round(score / total * 100);
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('result-page').classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-
   document.getElementById('res-score').textContent = score;
   document.getElementById('res-of').textContent    = `out of ${total}`;
-
-  let emoji, msg;
-  if (pct < 50) {
-    emoji = '🥺';
-    msg   = 'জেসমিন... এটা কিন্তু তোমার মতো না 🥺 আবার মনোযোগ দিয়ে পড়ো। তোমার উপর আমার বিশ্বাস আছে ❤️';
-  } else if (pct < 80) {
-    emoji = '🌸';
-    msg   = 'ভালো করেছো জেসমিন 🌸 কিন্তু আমি জানি তুমি আরো ভালো করতে পারবে 😌';
-  } else {
-    emoji = '💖';
-    msg   = 'এইতো আমার বুদ্ধিমান মেয়ে 💖 তোমাকে নিয়ে অনেক অনেক গর্বিত জেসমিন 😘';
-    launchConfetti();
-  }
-  document.getElementById('res-emoji').textContent = emoji;
-  document.getElementById('res-msg').textContent   = msg;
-
-  // Score history chart
-  state.quizHistory.push({ label, score, total, date: new Date().toLocaleDateString('bn-BD') });
-  save();
-  renderResultChart(score, total);
-
+  document.getElementById('res-emoji').textContent = pct < 50 ? '🥺' : pct < 80 ? '🌸' : '💖';
+  document.getElementById('res-msg').textContent   = getResultMsg(pct);
+  if (pct >= 80) launchConfetti();
+  state.quizHistory.push({ label, score, total, date: new Date().toLocaleDateString() });
+  save(); renderResultChart();
   document.getElementById('res-continue-btn').onclick = () => navigate('course', state.currentCourse);
   document.getElementById('res-retry-btn').onclick    = () => state.quiz.retryFn?.();
 }
 
-function renderResultChart(latestScore, latestTotal) {
-  const recent = state.quizHistory.slice(-6);
+function renderResultChart() {
   const container = document.getElementById('res-chart');
   container.innerHTML = '';
-  recent.forEach((h, i) => {
+  state.quizHistory.slice(-6).forEach((h, i) => {
     const pct = Math.round(h.score / h.total * 100);
-    const col = document.createElement('div');
-    col.className = 'chart-col';
-    col.innerHTML = `
-      <div class="chart-bar" style="height:${Math.max(pct, 5)}%; animation-delay:${i * 0.1}s"></div>
-      <div class="chart-pct">${pct}%</div>`;
+    const col = document.createElement('div'); col.className = 'chart-col';
+    col.innerHTML = `<div class="chart-bar" style="height:${Math.max(pct,5)}%;animation-delay:${i*0.1}s"></div><div class="chart-pct">${pct}%</div>`;
     container.appendChild(col);
   });
 }
@@ -692,15 +670,12 @@ function renderDashboard() {
   document.getElementById('dash-quizzes').textContent = state.quizHistory.length;
   document.getElementById('dash-streak').textContent  = state.streak;
   document.getElementById('streak-count').textContent = state.streak;
-
+  const dashSub = document.querySelector('.dash-hero p');
+  if (dashSub) dashSub.textContent = randFrom(FLIRT_LINES);
   if (state.quizHistory.length > 0) {
-    const avg = Math.round(
-      state.quizHistory.reduce((s, h) => s + (h.score / h.total * 100), 0) / state.quizHistory.length
-    );
+    const avg = Math.round(state.quizHistory.reduce((s, h) => s + (h.score / h.total * 100), 0) / state.quizHistory.length);
     document.getElementById('dash-avg').textContent = avg + '%';
   }
-
-  // Chapter progress
   const progList = document.getElementById('dash-prog-list');
   progList.innerHTML = '';
   Object.values(COURSES).forEach(course => {
@@ -708,31 +683,19 @@ function renderDashboard() {
       const total = ch.lectures.length;
       const done  = ch.lectures.filter((_, li) => state.progress[`${course.id}-${ch.id}-${li}`]).length;
       const pct   = Math.round(done / total * 100);
-      const row   = document.createElement('div');
-      row.className = 'ch-prog-row';
-      row.innerHTML = `
-        <div class="ch-prog-meta">
-          <span class="ch-prog-name">${ch.name}</span>
-          <span class="ch-prog-pct">${done}/${total} (${pct}%)</span>
-        </div>
-        <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>`;
+      const row   = document.createElement('div'); row.className = 'ch-prog-row';
+      row.innerHTML = `<div class="ch-prog-meta"><span class="ch-prog-name">${ch.name}</span><span class="ch-prog-pct">${done}/${total} (${pct}%)</span></div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>`;
       progList.appendChild(row);
     });
   });
-
-  // History list
   const histList = document.getElementById('dash-hist-list');
-  if (state.quizHistory.length === 0) {
+  if (!state.quizHistory.length) {
     histList.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No quizzes yet. Start learning! 📚</p>';
   } else {
     histList.innerHTML = [...state.quizHistory].reverse().slice(0, 12).map(h => {
-      const pct   = Math.round(h.score / h.total * 100);
-      const color = pct >= 80 ? 'var(--mint)' : pct >= 50 ? 'var(--gold)' : 'var(--danger)';
-      return `<div class="hist-item">
-        <span style="color:var(--text-muted)">${h.date}</span>
-        <span style="flex:1;margin-left:12px;font-weight:600;">${h.label}</span>
-        <span class="hist-score" style="color:${color}">${h.score}/${h.total} (${pct}%)</span>
-      </div>`;
+      const pct = Math.round(h.score / h.total * 100);
+      const col = pct >= 80 ? 'var(--mint)' : pct >= 50 ? 'var(--gold)' : 'var(--danger)';
+      return `<div class="hist-item"><span style="color:var(--text-muted)">${h.date}</span><span style="flex:1;margin-left:12px;font-weight:600">${h.label}</span><span class="hist-score" style="color:${col}">${h.score}/${h.total} (${pct}%)</span></div>`;
     }).join('');
   }
 }
@@ -741,103 +704,63 @@ function renderDashboard() {
 // STREAK
 // ══════════════════════════════════════════════════════════════
 function updateStreak() {
-  const today     = new Date().toDateString();
-  const yesterday = new Date(Date.now() - 86400000).toDateString();
-  if (state.lastVisit === today)          return;
-  if (state.lastVisit === yesterday)      state.streak++;
-  else if (state.lastVisit !== today)     state.streak = 1;
+  const today = new Date().toDateString(), yesterday = new Date(Date.now()-86400000).toDateString();
+  if (state.lastVisit === today) return;
+  state.streak = state.lastVisit === yesterday ? state.streak + 1 : 1;
   state.lastVisit = today;
   document.getElementById('streak-count').textContent = state.streak;
   save();
 }
 
 // ══════════════════════════════════════════════════════════════
-// ANIMATIONS — CONFETTI, HEARTS, PARTICLES
+// ANIMATIONS
 // ══════════════════════════════════════════════════════════════
 function launchConfetti() {
-  const wrap   = document.getElementById('confetti-wrap');
+  const wrap = document.getElementById('confetti-wrap');
   const colors = ['#7c1dff','#e8195a','#06b6d4','#f59e0b','#10b981','#f9a8d4','#a855f7'];
   for (let i = 0; i < 100; i++) {
     setTimeout(() => {
-      const p = document.createElement('div');
-      p.className = 'confetti-piece';
-      p.style.cssText = `
-        left: ${Math.random() * 100}vw;
-        background: ${colors[i % colors.length]};
-        width: ${6 + Math.random() * 8}px;
-        height: ${6 + Math.random() * 8}px;
-        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-        animation-duration: ${2 + Math.random() * 2}s;
-        animation-delay: ${Math.random() * 1.5}s;
-      `;
-      wrap.appendChild(p);
-      setTimeout(() => p.remove(), 4500);
+      const p = document.createElement('div'); p.className = 'confetti-piece';
+      p.style.cssText = `left:${Math.random()*100}vw;background:${colors[i%colors.length]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*1.5}s;`;
+      wrap.appendChild(p); setTimeout(() => p.remove(), 4500);
     }, i * 20);
   }
 }
-
 function spawnHeart() {
   const emojis = ['💖','💕','🌸','✨','💜','🩷'];
-  const h = document.createElement('div');
-  h.className = 'heart-fly';
-  h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-  h.style.left  = (15 + Math.random() * 70) + 'vw';
-  h.style.top   = '80vh';
-  document.body.appendChild(h);
-  setTimeout(() => h.remove(), 2600);
+  const h = document.createElement('div'); h.className = 'heart-fly';
+  h.textContent = randFrom(emojis); h.style.left = (15+Math.random()*70)+'vw'; h.style.top='80vh';
+  document.body.appendChild(h); setTimeout(() => h.remove(), 2600);
 }
-
 function spawnParticles() {
-  const colors = ['rgba(124,29,255,0.4)', 'rgba(232,25,90,0.3)', 'rgba(6,182,212,0.3)'];
-  for (let i = 0; i < 12; i++) {
-    setTimeout(() => {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      const size = 4 + Math.random() * 6;
-      p.style.cssText = `
-        left: ${Math.random() * 100}vw;
-        width: ${size}px; height: ${size}px;
-        background: ${colors[Math.floor(Math.random() * colors.length)]};
-        animation-duration: ${8 + Math.random() * 12}s;
-        animation-delay: ${Math.random() * 6}s;
-      `;
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), 20000);
-    }, i * 300);
-  }
+  const colors = ['rgba(124,29,255,0.4)','rgba(232,25,90,0.3)','rgba(6,182,212,0.3)'];
+  for (let i = 0; i < 12; i++) setTimeout(() => {
+    const p = document.createElement('div'); p.className = 'particle';
+    const s = 4+Math.random()*6;
+    p.style.cssText = `left:${Math.random()*100}vw;width:${s}px;height:${s}px;background:${randFrom(colors)};animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*6}s;`;
+    document.body.appendChild(p); setTimeout(() => p.remove(), 20000);
+  }, i * 300);
 }
 
 // ══════════════════════════════════════════════════════════════
-// COURSE COMPLETION
+// COURSE COMPLETE, POPUP, DARK MODE
 // ══════════════════════════════════════════════════════════════
 function checkCourseComplete(cid) {
   const { total, done } = courseProgress(cid);
   if (done === total && total > 0) {
-    const course = COURSES[cid];
     setTimeout(() => {
       launchConfetti();
-      showPopup('🍽️', 'Course Complete! 🎊',
-        `You finished all of ${course.title}! Dinner treat unlocked 🍽️❤️ So proud of you, Jasmin!`);
+      showPopup('🎊', 'Course Complete!', `Jesmin, you just finished all of ${COURSES[cid].title}! 🌸 I'm beyond proud of you — you deserve the world! 💖`);
     }, 600);
   }
 }
-
-// ══════════════════════════════════════════════════════════════
-// POPUP
-// ══════════════════════════════════════════════════════════════
 function showPopup(emoji, title, msg) {
   document.getElementById('popup-emoji').textContent = emoji;
   document.getElementById('popup-title').textContent = title;
   document.getElementById('popup-msg').textContent   = msg;
   document.getElementById('popup-overlay').classList.add('show');
 }
-window.closePopup = function() {
-  document.getElementById('popup-overlay').classList.remove('show');
-};
-
-// ══════════════════════════════════════════════════════════════
-// DARK MODE
-// ══════════════════════════════════════════════════════════════
+window.closePopup = () => document.getElementById('popup-overlay').classList.remove('show');
 window.toggleDark = function() {
   state.dark = !state.dark;
   document.documentElement.setAttribute('data-theme', state.dark ? 'dark' : 'light');
@@ -846,20 +769,13 @@ window.toggleDark = function() {
 };
 
 // ══════════════════════════════════════════════════════════════
-// NAVBAR SCROLL EFFECT
+// SCROLL + CONTEXT MENU
 // ══════════════════════════════════════════════════════════════
 window.addEventListener('scroll', () => {
   const nav = document.getElementById('navbar');
-  if (window.scrollY > 20) nav.classList.add('scrolled');
-  else                     nav.classList.remove('scrolled');
+  nav.classList.toggle('scrolled', window.scrollY > 20);
 }, { passive: true });
-
-// ══════════════════════════════════════════════════════════════
-// PREVENT RIGHT CLICK ON VIDEO
-// ══════════════════════════════════════════════════════════════
-document.addEventListener('contextmenu', e => {
-  if (e.target.closest('#player-shell')) e.preventDefault();
-});
+document.addEventListener('contextmenu', e => { if (e.target.closest('#player-shell')) e.preventDefault(); });
 
 // ══════════════════════════════════════════════════════════════
 // INIT
@@ -867,12 +783,11 @@ document.addEventListener('contextmenu', e => {
 function init() {
   load();
   document.documentElement.setAttribute('data-theme', state.dark ? 'dark' : 'light');
-  document.getElementById('dark-btn').textContent = state.dark ? '☀️' : '🌙';
+  document.getElementById('dark-btn').textContent     = state.dark ? '☀️' : '🌙';
   document.getElementById('streak-count').textContent = state.streak;
   updateStreak();
   spawnParticles();
   setInterval(spawnParticles, 15000);
   renderHome();
 }
-
 document.addEventListener('DOMContentLoaded', init);

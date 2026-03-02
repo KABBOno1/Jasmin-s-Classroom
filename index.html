@@ -9,6 +9,7 @@
   <!-- Preconnect for fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
@@ -177,31 +178,9 @@
               ></iframe>
             </div>
 
-            <!-- Custom controls bar -->
+            <!-- Custom controls bar — minimal, just now-playing label -->
             <div class="player-controls">
               <div class="ctrl-top">
-                <!-- Speed selector -->
-                <label for="speed-sel" style="color:rgba(255,255,255,0.6);font-size:0.72rem;">⚡ Speed</label>
-                <select class="ctrl-select" id="speed-sel" onchange="setSpeed(this.value)" aria-label="Playback Speed">
-                  <option value="0.5">0.5×</option>
-                  <option value="0.75">0.75×</option>
-                  <option value="1" selected>1× (Normal)</option>
-                  <option value="1.25">1.25×</option>
-                  <option value="1.5">1.5×</option>
-                  <option value="2">2×</option>
-                </select>
-
-                <!-- Quality selector -->
-                <label for="quality-sel" style="color:rgba(255,255,255,0.6);font-size:0.72rem;margin-left:8px;">🎞️ Quality</label>
-                <select class="ctrl-select" id="quality-sel" onchange="setQuality(this.value)" aria-label="Video Quality">
-                  <option value="auto" selected>Auto</option>
-                  <option value="hd1080">1080p HD</option>
-                  <option value="hd720">720p</option>
-                  <option value="large">480p</option>
-                  <option value="medium">360p</option>
-                  <option value="small">240p</option>
-                </select>
-
                 <div class="ctrl-spacer"></div>
                 <div class="ctrl-label" id="now-playing-label">▶ Now Playing</div>
               </div>
